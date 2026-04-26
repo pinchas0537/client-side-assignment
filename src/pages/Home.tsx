@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { getItems } from '../api/items';
 import { useAppDispatch } from '../redux/hooks';
 import { addToCart } from '../redux/cartSlice';
-import { Item } from '../types';
+import type { Item } from '../types';
 import styles from './Home.module.css';
 
 const Home: React.FC = () => {
