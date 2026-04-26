@@ -80,7 +80,7 @@ const Details: React.FC = () => {
           <div className={styles.supplierInfo}>
             <strong>ספק:</strong> {(() => {
               const supp = item.supplierId || item.supplier;
-              return typeof supp === 'object' && supp !== null ? supp.name : supp;
+              return String(typeof supp === 'object' && supp !== null ? supp.name : supp || 'לא ידוע');
             })()}
           </div>
 
