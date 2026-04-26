@@ -69,7 +69,7 @@ const Details: React.FC = () => {
           <h1 className={styles.title}>{item.name}</h1>
           
           <div className={styles.priceRow}>
-            <span className={styles.price}>₪{item.price}</span>
+            <span className={styles.price}>₪{item.consumerPrice || item.price || 0}</span>
             <span className={styles.stock}>
               {item.stock > 0 ? `במלאי: ${item.stock}` : <span className={styles.outOfStock}>אזל מהמלאי</span>}
             </span>
@@ -78,7 +78,10 @@ const Details: React.FC = () => {
           <p className={styles.description}>{item.description}</p>
           
           <div className={styles.supplierInfo}>
-            <strong>ספק:</strong> {typeof item.supplier === 'object' ? item.supplier.name : item.supplier}
+            <strong>ספק:</strong> {(() => {
+              const supp = item.supplierId || item.supplier;
+              return typeof supp === 'object' && supp !== null ? supp.name : supp;
+            })()}
           </div>
 
           <div className={styles.actions}>

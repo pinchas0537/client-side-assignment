@@ -29,16 +29,26 @@ const Home: React.FC = () => {
   }, []);
 
   const categories = useMemo(() => Array.from(new Set(items.map(i => i.category))), [items]);
-  const suppliers = useMemo(() => Array.from(new Set(items.map(i => typeof i.supplier === 'object' ? i.supplier.name : i.supplier))), [items]);
+  const suppliers = useMemo(() => Array.from(new Set(items.map(i => {
+    const supp = i.supplierId || i.supplier;
+    return typeof supp === 'object' && supp !== null ? supp.name : supp;
+  }))), [items]);
 
   const filteredItems = useMemo(() => {
     return items
       .filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
       .filter(item => category ? item.category === category : true)
-      .filter(item => supplier ? (typeof item.supplier === 'object' ? item.supplier.name === supplier : item.supplier === supplier) : true)
+      .filter(item => {
+        if (!supplier) return true;
+        const supp = item.supplierId || item.supplier;
+        const suppName = typeof supp === 'object' && supp !== null ? supp.name : supp;
+        return suppName === supplier;
+      })
       .sort((a, b) => {
-        if (sortBy === 'priceAsc') return a.price - b.price;
-        if (sortBy === 'priceDesc') return b.price - a.price;
+        const priceA = a.consumerPrice || a.price || 0;
+        const priceB = b.consumerPrice || b.price || 0;
+        if (sortBy === 'priceAsc') return priceA - priceB;
+        if (sortBy === 'priceDesc') return priceB - priceA;
         if (sortBy === 'nameAsc') return a.name.localeCompare(b.name, 'he');
         if (sortBy === 'nameDesc') return b.name.localeCompare(a.name, 'he');
         return 0;
@@ -115,7 +125,7 @@ const Home: React.FC = () => {
                 <h3 className={styles.cardTitle}>{item.name}</h3>
                 <p className={styles.cardDescription}>{item.description}</p>
                 <div className={styles.cardFooter}>
-                  <span className={styles.price}>₪{item.price}</span>
+                  <span className={styles.price}>₪{item.consumerPrice || item.price || 0}</span>
                   <div className={styles.cardActions}>
                     <Link to={`/product/${item._id}`} className="btn btn-secondary btn-icon" title="צפייה בפרטים">
                       <Eye size={20} />

@@ -75,7 +75,7 @@ const Cart: React.FC = () => {
               </div>
 
               <div className={styles.itemPrice}>
-                ₪{item.price}
+                ₪{item.consumerPrice || item.price || 0}
               </div>
 
               <div className={styles.quantityControl}>
@@ -96,7 +96,7 @@ const Cart: React.FC = () => {
               </div>
 
               <div className={styles.itemTotal}>
-                ₪{(item.price * item.cartQuantity).toFixed(2)}
+                ₪{((item.consumerPrice || item.price || 0) * item.cartQuantity).toFixed(2)}
               </div>
 
               <button 
@@ -118,7 +118,7 @@ const Cart: React.FC = () => {
                   <img src={item.image || 'https://via.placeholder.com/150'} alt={item.name} className={styles.recImage} />
                   <div className={styles.recContent}>
                     <h4 className={styles.recTitle}>{item.name}</h4>
-                    <span className={styles.recPrice}>₪{item.price}</span>
+                    <span className={styles.recPrice}>₪{item.consumerPrice || item.price || 0}</span>
                     <button 
                       className="btn btn-primary" style={{ width: '100%', marginTop: '0.5rem', padding: '0.5rem' }}
                       onClick={() => dispatch(addToCart({ item, quantity: 1 }))}

@@ -1,12 +1,14 @@
 export interface Item {
   _id: string;
   name: string;
-  price: number;
+  price?: number;
+  consumerPrice?: number;
   stock: number;
   category: string;
-  supplier: string | Supplier; // Can be ID or populated object
-  image: string;
-  description: string;
+  supplier?: string | Supplier;
+  supplierId?: string | Supplier;
+  image?: string;
+  description?: string;
 }
 
 export interface SupplierItem {

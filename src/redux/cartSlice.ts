@@ -17,7 +17,7 @@ const initialState: CartState = {
 };
 
 const calculateTotal = (items: CartItem[]) => {
-  return items.reduce((total, item) => total + item.price * item.cartQuantity, 0);
+  return items.reduce((total, item) => total + (item.consumerPrice || item.price || 0) * item.cartQuantity, 0);
 };
 
 const cartSlice = createSlice({

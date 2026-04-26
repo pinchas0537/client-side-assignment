@@ -133,7 +133,7 @@ const Admin: React.FC = () => {
                   </td>
                   <td>{item.name}</td>
                   <td>{item.category}</td>
-                  <td>₪{item.price}</td>
+                  <td>₪{item.consumerPrice || item.price || 0}</td>
                   <td className={item.stock < 5 ? styles.warningText : ''}>{item.stock}</td>
                   <td>
                     <div className={styles.actionCell}>
