@@ -1,36 +1,28 @@
 import { api } from "./axios";
-import type { 
-  AnalyticsRevenue, 
-  AnalyticsCategory, 
-  AnalyticsTopItem, 
-  AnalyticsMargins, 
-  AnalyticsTopSupplier 
-} from "../types";
 
-// Adjust this base URL if the analytics routes are mounted differently in the server
 const BASE_URL = "/analytics";
 
-export const getMonthlyRevenue = async (): Promise<AnalyticsRevenue> => {
+export const getMonthlyRevenue = async () => {
   const { data } = await api.get(`${BASE_URL}/monthly-revenue`);
-  return data;
+  return data.data; // returns a number
 };
 
-export const getWeeklyTopCategory = async (): Promise<AnalyticsCategory> => {
+export const getWeeklyTopCategory = async () => {
   const { data } = await api.get(`${BASE_URL}/top-category`);
-  return data;
+  return data.data; // returns { _id, totalProfit }
 };
 
-export const getDailyTopItem = async (): Promise<AnalyticsTopItem> => {
+export const getDailyTopItem = async () => {
   const { data } = await api.get(`${BASE_URL}/daily-top-item`);
-  return data;
+  return data.data; // returns null or { _id, totalProfit }
 };
 
-export const getItemMargins = async (): Promise<AnalyticsMargins> => {
+export const getItemMargins = async () => {
   const { data } = await api.get(`${BASE_URL}/item-margins`);
-  return data;
+  return data.data; // returns { highest: { _id, name, margin }, lowest: { _id, name, margin } }
 };
 
-export const getMostProfitableSupplier = async (): Promise<AnalyticsTopSupplier> => {
+export const getMostProfitableSupplier = async () => {
   const { data } = await api.get(`${BASE_URL}/top-supplier`);
-  return data;
+  return data.data; // returns { _id, totalProfit }
 };

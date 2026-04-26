@@ -61,7 +61,7 @@ const Admin: React.FC = () => {
             <div className={styles.statIcon} style={{ color: 'var(--success)' }}><DollarSign size={24} /></div>
             <div className={styles.statContent}>
               <div className={styles.statLabel}>הכנסות (30 ימים אחרונים)</div>
-              <div className={styles.statValue}>₪{revenue?.revenue || 0}</div>
+              <div className={styles.statValue}>₪{typeof revenue === 'number' ? revenue : (revenue?.revenue || 0)}</div>
             </div>
           </div>
 
@@ -69,8 +69,8 @@ const Admin: React.FC = () => {
             <div className={styles.statIcon}><TrendingUp size={24} /></div>
             <div className={styles.statContent}>
               <div className={styles.statLabel}>קטגוריה רווחית (7 ימים)</div>
-              <div className={styles.statValue}>{topCategory?.category || '---'}</div>
-              <div className={styles.statSubtext}>רווח: ₪{topCategory?.profit || 0}</div>
+              <div className={styles.statValue}>{topCategory?._id || topCategory?.category || '---'}</div>
+              <div className={styles.statSubtext}>רווח: ₪{topCategory?.totalProfit || topCategory?.profit || 0}</div>
             </div>
           </div>
 
@@ -78,8 +78,8 @@ const Admin: React.FC = () => {
             <div className={styles.statIcon}><Trophy size={24} /></div>
             <div className={styles.statContent}>
               <div className={styles.statLabel}>מוצר רווחי (24 שעות)</div>
-              <div className={styles.statValue}>{topItem?.item?.name || '---'}</div>
-              <div className={styles.statSubtext}>רווח: ₪{topItem?.profit || 0}</div>
+              <div className={styles.statValue}>{topItem?.name || topItem?._id || '---'}</div>
+              <div className={styles.statSubtext}>רווח: ₪{topItem?.totalProfit || topItem?.profit || 0}</div>
             </div>
           </div>
 
@@ -88,8 +88,8 @@ const Admin: React.FC = () => {
             <div className={styles.statContent}>
               <div className={styles.statLabel}>רווחיות (הכי גבוה/נמוך)</div>
               <div className={styles.statValue} style={{ fontSize: '1rem' }}>
-                <span className={styles.successText}>↑ {margins?.highest?.item?.name} ({margins?.highest?.margin}%)</span><br/>
-                <span className={styles.warningText}>↓ {margins?.lowest?.item?.name} ({margins?.lowest?.margin}%)</span>
+                <span className={styles.successText}>↑ {margins?.highest?.name || '---'} ({margins?.highest?.margin || 0}%)</span><br/>
+                <span className={styles.warningText}>↓ {margins?.lowest?.name || '---'} ({margins?.lowest?.margin || 0}%)</span>
               </div>
             </div>
           </div>
@@ -98,8 +98,8 @@ const Admin: React.FC = () => {
             <div className={styles.statIcon}><Users size={24} /></div>
             <div className={styles.statContent}>
               <div className={styles.statLabel}>הספק הרווחי ביותר</div>
-              <div className={styles.statValue}>{topSupplier?.supplier?.name || '---'}</div>
-              <div className={styles.statSubtext}>רווח: ₪{topSupplier?.profit || 0}</div>
+              <div className={styles.statValue}>{topSupplier?.name || topSupplier?._id || '---'}</div>
+              <div className={styles.statSubtext}>רווח: ₪{topSupplier?.totalProfit || topSupplier?.profit || 0}</div>
             </div>
           </div>
         </div>

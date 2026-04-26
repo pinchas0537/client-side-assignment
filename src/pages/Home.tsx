@@ -93,7 +93,7 @@ const Home: React.FC = () => {
           <h3>סינון לפי ספק</h3>
           <select className={styles.select} value={supplier} onChange={(e) => setSupplier(e.target.value)}>
             <option value="">הכל</option>
-            {suppliers.map(s => <option key={s as string} value={s as string}>{s}</option>)}
+            {suppliers.map(s => <option key={String(s)} value={String(s)}>{String(s)}</option>)}
           </select>
         </div>
 
