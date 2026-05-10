@@ -14,7 +14,8 @@ export const getOrderById = async (id: string): Promise<Order> => {
 };
 
 export const createOrder = async (order: Partial<Order>): Promise<Order> => {
-  const { data } = await api.post(BASE_URL, order);
+  const  {data}  = await api.post(BASE_URL, order);
+  console.log(data);
   return data;
 };
 
