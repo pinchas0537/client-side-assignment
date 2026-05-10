@@ -114,7 +114,6 @@ const Home: React.FC = () => {
                 <div className={`glass ${styles.emptyState}`}>
                     <PackageX size={48} className={styles.emptyIcon} />
                     <h2>אופס! שגיאה בטעינת המוצרים</h2>
-                    <p>אנא ודא שהשרת פועל בכתובת localhost:3000</p>
                 </div>
             </div>
         );
