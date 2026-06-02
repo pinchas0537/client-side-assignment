@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
-  const cartItemsCount = cartItems.reduce((acc, item) => acc + item.cartQuantity, 0);
+  const cartItemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <nav className={`${styles.navbar} glass`}>
