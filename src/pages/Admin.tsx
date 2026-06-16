@@ -62,7 +62,7 @@ const Admin: React.FC = () => {
     });
     const [supplierForm, setSupplierForm] = useState<Partial<Supplier & { contactInfo?: string }>>({
         name: "",
-        contactInfo: "",
+        items: [{ price: 0, itemName: "" }],
     });
 
     const { data: items = [], isLoading: itemsLoading } = useQuery<Item[]>({ queryKey: ["items"], queryFn: getItems });
@@ -105,13 +105,14 @@ const Admin: React.FC = () => {
             closeModal();
         },
         onError: (err: any) => {
+            console.error(err);
             const msg = err.response?.data?.message || "שגיאה בשמירת המוצר";
             toast.error(msg);
         },
     });
 
     const supplierMutation = useMutation({
-        mutationFn: async (data: Partial<Supplier>) => {
+        mutationFn: async (data: Partial<Supplier>) => {            
             return editingId ? updateSupplier(editingId, data) : createSupplier(data);
         },
         onSuccess: () => {
@@ -119,7 +120,10 @@ const Admin: React.FC = () => {
             toast.success("פרטי הספק נשמרו");
             closeModal();
         },
-        onError: (err: any) => toast.error(err.response?.data?.message || "שגיאה בשמירת הספק"),
+        onError: (err: any) => {
+            console.error(err);
+            toast.error(err.response?.data?.message || "שגיאה בשמירת הספק");
+        },
     });
 
     const deleteItemMutation = useMutation({
@@ -429,11 +433,18 @@ const Admin: React.FC = () => {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>פרטי קשר / טלפון</label>
+                                    <label>שם הפריט</label>
                                     <input
-                                        value={supplierForm.contactInfo}
+                                        value={supplierForm.items?.[0]?.itemName || ""}
                                         onChange={(e) =>
-                                            setSupplierForm({ ...supplierForm, contactInfo: e.target.value })
+                                            setSupplierForm({ ...supplierForm, items: [{ ...supplierForm.items?.[0], itemName: e.target.value, price: supplierForm.items?.[0]?.price || 0 }] })
+                                        }
+                                    />
+                                    <label>מחיר הפריט</label>
+                                    <input
+                                        value={supplierForm.items?.[0]?.price || 0}
+                                        onChange={(e) =>
+                                            setSupplierForm({ ...supplierForm, items: [{ ...supplierForm.items?.[0], itemName: supplierForm.items?.[0]?.itemName || "", price: parseFloat(e.target.value) || 0 }] })
                                         }
                                     />
                                 </div>

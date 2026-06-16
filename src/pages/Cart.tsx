@@ -38,7 +38,7 @@ const Cart: React.FC = () => {
         },
         onError: (err: unknown) => {
             if (axios.isAxiosError(err)) {
-                console.log(err);
+                console.error(err);
                 const errorMsg = err.response?.data?.message || "חלה שגיאה בביצוע ההזמנה";
                 toast.error(errorMsg);
             } else {
