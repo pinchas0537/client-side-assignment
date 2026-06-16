@@ -24,6 +24,5 @@ export const getItemMargins = async () => {
 
 export const getMostProfitableSupplier = async () => {
     const { data } = await api.get(`${BASE_URL}/top-supplier`);
-    console.log(data);
     return data;
 };
