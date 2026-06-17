@@ -54,7 +54,6 @@ const Admin: React.FC = () => {
     const [itemForm, setItemForm] = useState<Partial<Item>>({
         name: "",
         category: "",
-        price: 0,
         consumerPrice: 0,
         stock: 0,
         supplierId: "",
@@ -93,7 +92,6 @@ const Admin: React.FC = () => {
         mutationFn: async (data: Partial<Item>) => {
             const payload = {
                 ...data,
-                price: Number(data.price),
                 consumerPrice: Number(data.consumerPrice),
                 stock: Number(data.stock),
             };
@@ -112,7 +110,7 @@ const Admin: React.FC = () => {
     });
 
     const supplierMutation = useMutation({
-        mutationFn: async (data: Partial<Supplier>) => {            
+        mutationFn: async (data: Partial<Supplier>) => {
             return editingId ? updateSupplier(editingId, data) : createSupplier(data);
         },
         onSuccess: () => {
@@ -148,7 +146,6 @@ const Admin: React.FC = () => {
             setItemForm({
                 name: item.name,
                 category: item.category,
-                price: item.price,
                 consumerPrice: item.consumerPrice,
                 stock: item.stock,
                 supplierId: typeof item.supplierId === "object" ? (item.supplierId as any)._id : item.supplierId,
@@ -156,7 +153,7 @@ const Admin: React.FC = () => {
             });
         } else {
             setEditingId(null);
-            setItemForm({ name: "", category: "", price: 0, consumerPrice: 0, stock: 0, supplierId: "", image: "" });
+            setItemForm({ name: "", category: "", consumerPrice: 0, stock: 0, supplierId: "", image: "" });
         }
         setModalMode("item");
     };
@@ -359,17 +356,6 @@ const Admin: React.FC = () => {
                                 </div>
                                 <div className={styles.formGrid}>
                                     <div className={styles.formGroup}>
-                                        <label>עלות ספק</label>
-                                        <input
-                                            type="number"
-                                            value={itemForm.price}
-                                            onChange={(e) =>
-                                                setItemForm({ ...itemForm, price: Number(e.target.value) })
-                                            }
-                                            required
-                                        />
-                                    </div>
-                                    <div className={styles.formGroup}>
                                         <label>מחיר לצרכן</label>
                                         <input
                                             type="number"
@@ -437,14 +423,32 @@ const Admin: React.FC = () => {
                                     <input
                                         value={supplierForm.items?.[0]?.itemName || ""}
                                         onChange={(e) =>
-                                            setSupplierForm({ ...supplierForm, items: [{ ...supplierForm.items?.[0], itemName: e.target.value, price: supplierForm.items?.[0]?.price || 0 }] })
+                                            setSupplierForm({
+                                                ...supplierForm,
+                                                items: [
+                                                    {
+                                                        ...supplierForm.items?.[0],
+                                                        itemName: e.target.value,
+                                                        price: supplierForm.items?.[0]?.price || 0,
+                                                    },
+                                                ],
+                                            })
                                         }
                                     />
                                     <label>מחיר הפריט</label>
                                     <input
                                         value={supplierForm.items?.[0]?.price || 0}
                                         onChange={(e) =>
-                                            setSupplierForm({ ...supplierForm, items: [{ ...supplierForm.items?.[0], itemName: supplierForm.items?.[0]?.itemName || "", price: parseFloat(e.target.value) || 0 }] })
+                                            setSupplierForm({
+                                                ...supplierForm,
+                                                items: [
+                                                    {
+                                                        ...supplierForm.items?.[0],
+                                                        itemName: supplierForm.items?.[0]?.itemName || "",
+                                                        price: parseFloat(e.target.value) || 0,
+                                                    },
+                                                ],
+                                            })
                                         }
                                     />
                                 </div>
