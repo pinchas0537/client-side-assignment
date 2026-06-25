@@ -12,7 +12,7 @@ export interface Item {
 }
 
 export interface SupplierItem {
-    name: string;
+    itemName: string;
     price: number;
 }
 
@@ -20,7 +20,6 @@ export interface Supplier {
     _id: string;
     name: string;
     items: SupplierItem[];
-    contactInfo?: string;
 }
 
 export interface OrderItem {
