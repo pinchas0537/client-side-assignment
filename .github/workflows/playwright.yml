@@ -35,28 +35,26 @@ jobs:
         echo "MONGOE_EXPRESS_PORT=${{ secrets.MONGOE_EXPRESS_PORT }}" >> .env
         echo "CLIENT_PORT=${{ secrets.CLIENT_PORT }}" >> .env
 
-    - name: Start Docker Compose
+    - name: Start Docker Compose (backend + db only)
       working-directory: server-side-assignment
-      run: docker compose up -d --build
-
-    - name: Wait for Docker containers
-      run: sleep 30
+      run: docker compose up -d --build backend db
 
     - name: Check containers status
       run: docker ps -a
 
-    - name: Check backend logs
-      run: docker logs server-side-assignment-backend-1 || true
-
     - name: Wait for backend
-      run: npx wait-on http://localhost:${{ secrets.PORT }} --timeout 120000
+      run: npx wait-on tcp:localhost:${{ secrets.PORT }} --timeout 120000
 
-    - name: Wait for frontend
-      run: npx wait-on http://localhost:${{ secrets.CLIENT_PORT }} --timeout 120000
-
-    - name: Install dependencies
+    - name: Install frontend dependencies
       working-directory: client-side-assignment
       run: npm ci
+
+    - name: Start frontend
+      working-directory: client-side-assignment
+      run: npm run dev &
+
+    - name: Wait for frontend
+      run: npx wait-on tcp:localhost:${{ secrets.CLIENT_PORT }} --timeout 60000
 
     - name: Install Playwright Browsers
       working-directory: client-side-assignment
