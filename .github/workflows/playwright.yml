@@ -51,6 +51,8 @@ jobs:
 
     - name: Start frontend
       working-directory: client-side-assignment
+      env:
+        VITE_API_URL: ${{ secrets.VITE_API_URL }}
       run: npm run dev &
 
     - name: Wait for frontend
