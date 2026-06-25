@@ -47,7 +47,7 @@ jobs:
 
     - name: Install frontend dependencies
       working-directory: client-side-assignment
-      run: npm ci
+      run: npm install
 
     - name: Start frontend
       working-directory: client-side-assignment
