@@ -20,6 +20,7 @@ jobs:
         repository: pinchas0537/server-side-assignment
         path: server-side-assignment
         token: ${{ secrets.GH_TOKEN }}
+        ref: Docker
 
     - uses: actions/setup-node@v4
       with:
