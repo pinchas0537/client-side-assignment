@@ -24,7 +24,7 @@ const Cart: React.FC = () => {
                 items: cartItems.map((item) => ({
                     itemId: item._id,
                     quantity: item.quantity,
-                    price: item.consumerPrice || item.price || 0,
+                    price: item.consumerPrice || 0,
                 })),
             };
             return createOrder(orderPayload);
@@ -153,7 +153,7 @@ const Cart: React.FC = () => {
                                 <div className={styles.itemCategory}>{item.category}</div>
                             </div>
 
-                            <div className={styles.itemPrice}>₪{item.consumerPrice || item.price || 0}</div>
+                            <div className={styles.itemPrice}>₪{item.consumerPrice || 0}</div>
 
                             <div className={styles.quantityControl}>
                                 <button
@@ -178,7 +178,7 @@ const Cart: React.FC = () => {
                             </div>
 
                             <div className={styles.itemTotal}>
-                                ₪{((item.consumerPrice || item.price || 0) * item.quantity).toFixed(2)}
+                                ₪{((item.consumerPrice || 0) * item.quantity).toFixed(2)}
                             </div>
 
                             <button
@@ -205,7 +205,7 @@ const Cart: React.FC = () => {
                                     <div className={styles.recContent}>
                                         <h4 className={styles.recTitle}>{item.name}</h4>
                                         <span className={styles.recPrice}>
-                                            ₪{item.consumerPrice || item.price || 0}
+                                            ₪{item.consumerPrice || 0}
                                         </span>
                                         <button
                                             className="btn btn-primary"

@@ -4,8 +4,8 @@ export interface Item {
     consumerPrice?: number;
     stock: number;
     category: string;
-    supplier?: string | Supplier;
-    supplierId?: string | Supplier;
+    supplier?: Supplier;
+    supplierId?: string;
     image?: string;
     description?: string;
 }

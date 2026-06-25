@@ -115,6 +115,8 @@ const Admin: React.FC = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["suppliers"] });
+            queryClient.invalidateQueries({ queryKey: ["items"] });
+            queryClient.invalidateQueries({ queryKey: ["topSupplier"] });
             toast.success("פרטי הספק נשמרו");
             closeModal();
         },
@@ -136,6 +138,9 @@ const Admin: React.FC = () => {
         mutationFn: deleteSupplier,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["suppliers"] });
+            queryClient.invalidateQueries({ queryKey: ["items"] });
+            queryClient.invalidateQueries({ queryKey: ["revenue"] });
+            queryClient.invalidateQueries({ queryKey: ["topSupplier"] });
             toast.success("הספק נמחק");
         },
     });
@@ -242,6 +247,7 @@ const Admin: React.FC = () => {
                     <thead>
                         <tr>
                             <th>שם</th>
+                            <th>ספק</th>
                             <th>קטגוריה</th>
                             <th>מחיר צרכן</th>
                             <th>מלאי</th>
@@ -252,12 +258,17 @@ const Admin: React.FC = () => {
                         {items.map((item) => (
                             <tr key={item._id}>
                                 <td>{item.name}</td>
+                                <td>{item.supplier?.name}</td>
                                 <td>{item.category}</td>
                                 <td>₪{item.consumerPrice}</td>
                                 <td className={item.stock < 5 ? styles.warningText : ""}>{item.stock}</td>
                                 <td>
                                     <div className={styles.actionCell}>
-                                        <button className="btn btn-icon" onClick={() => openItemModal(item)}>
+                                        <button
+                                            className="btn btn-icon"
+                                            onClick={() => openItemModal(item)}
+                                            aria-label="edit item"
+                                        >
                                             <Edit size={16} />
                                         </button>
                                         <button
@@ -299,11 +310,24 @@ const Admin: React.FC = () => {
                                 <td>{sup.items?.length || 0}</td>
                                 <td>
                                     <div className={styles.actionCell}>
-                                        <button className="btn btn-icon" onClick={() => openSupplierModal(sup)}>
+                                        <button
+                                            className="btn btn-icon"
+                                            onClick={() => {
+                                                <h2>עובדים על זה... בקוב יהיה אפשרות</h2>;
+                                            }}
+                                        >
+                                            <Plus size={16} />
+                                        </button>
+                                        <button
+                                            className="btn btn-icon"
+                                            onClick={() => openSupplierModal(sup)}
+                                            aria-label="edit supplier"
+                                        >
                                             <Edit size={16} />
                                         </button>
                                         <button
                                             className="btn btn-icon btn-danger"
+                                            aria-label="delete supplier"
                                             onClick={() =>
                                                 window.confirm("למחוק ספק?") && deleteSupMutation.mutate(sup._id)
                                             }
@@ -339,16 +363,18 @@ const Admin: React.FC = () => {
                                 }}
                             >
                                 <div className={styles.formGroup}>
-                                    <label>שם מוצר</label>
+                                    <label htmlFor="item-name">שם מוצר</label>
                                     <input
+                                        id="item-name"
                                         value={itemForm.name}
                                         onChange={(e) => setItemForm({ ...itemForm, name: e.target.value })}
                                         required
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>קטגוריה (שדה חובה)</label>
+                                    <label htmlFor="category">קטגוריה</label>
                                     <input
+                                        id="category"
                                         value={itemForm.category}
                                         onChange={(e) => setItemForm({ ...itemForm, category: e.target.value })}
                                         required
@@ -356,8 +382,9 @@ const Admin: React.FC = () => {
                                 </div>
                                 <div className={styles.formGrid}>
                                     <div className={styles.formGroup}>
-                                        <label>מחיר לצרכן</label>
+                                        <label htmlFor="consumer-price">מחיר לצרכן</label>
                                         <input
+                                            id="consumer-price"
                                             type="number"
                                             value={itemForm.consumerPrice}
                                             onChange={(e) =>
@@ -368,8 +395,9 @@ const Admin: React.FC = () => {
                                     </div>
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>מלאי נוכחי</label>
+                                    <label htmlFor="inventory">מלאי נוכחי</label>
                                     <input
+                                        id="inventory"
                                         type="number"
                                         value={itemForm.stock}
                                         onChange={(e) => setItemForm({ ...itemForm, stock: Number(e.target.value) })}
@@ -377,8 +405,9 @@ const Admin: React.FC = () => {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>שיוך לספק</label>
+                                    <label htmlFor="supplier-select">שיוך לספק</label>
                                     <select
+                                        id="supplier-select"
                                         value={typeof itemForm.supplierId === "string" ? itemForm.supplierId : ""}
                                         onChange={(e) => setItemForm({ ...itemForm, supplierId: e.target.value })}
                                         required
@@ -411,16 +440,20 @@ const Admin: React.FC = () => {
                                 }}
                             >
                                 <div className={styles.formGroup}>
-                                    <label>שם הספק</label>
+                                    <label htmlFor="supplierName" role="dialog">
+                                        שם הספק
+                                    </label>
                                     <input
+                                        id="supplierName"
                                         value={supplierForm.name}
                                         onChange={(e) => setSupplierForm({ ...supplierForm, name: e.target.value })}
                                         required
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>שם הפריט</label>
+                                    <label htmlFor="itemName">שם הפריט</label>
                                     <input
+                                        id="itemName"
                                         value={supplierForm.items?.[0]?.itemName || ""}
                                         onChange={(e) =>
                                             setSupplierForm({
@@ -435,8 +468,9 @@ const Admin: React.FC = () => {
                                             })
                                         }
                                     />
-                                    <label>מחיר הפריט</label>
+                                    <label htmlFor="itemPrice">מחיר הפריט</label>
                                     <input
+                                        id="itemPrice"
                                         value={supplierForm.items?.[0]?.price || 0}
                                         onChange={(e) =>
                                             setSupplierForm({

@@ -9,6 +9,7 @@ import { addToCart } from "../redux/cartSlice";
 import styles from "./Details.module.css";
 
 const Details: React.FC = () => {
+    const { cartItems } = useAppSelector((state) => state.cart);
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -43,7 +44,6 @@ const Details: React.FC = () => {
             </div>
         );
     }
-    const { cartItems } = useAppSelector((state) => state.cart);
 
     const handleAddToCart = () => {
         const existingInCart = cartItems.find((i) => i._id === item._id);
@@ -104,7 +104,7 @@ const Details: React.FC = () => {
                     <h1 className={styles.title}>{item.name}</h1>
 
                     <div className={styles.priceRow}>
-                        <span className={styles.price}>₪{item.consumerPrice || item.price || 0}</span>
+                        <span className={styles.price}>₪{item.consumerPrice || 0}</span>
                         <span className={styles.stock}>
                             {item.stock > 0 ? (
                                 `במלאי: ${item.stock}`
@@ -117,11 +117,9 @@ const Details: React.FC = () => {
                     <p className={styles.description}>{item.description}</p>
 
                     <div className={styles.supplierInfo}>
-                        <strong>ספק:</strong>{" "}
-                        {(() => {
-                            const supp = item.supplierId || item.supplier;
-                            return String(typeof supp === "object" && supp !== null ? supp.name : supp || "לא ידוע");
-                        })()}
+                        <strong>ספק: </strong>
+                        {item.supplier?.name || "לא ידוע"}
+                        {(() => {})()}
                     </div>
 
                     <div className={styles.actions}>
