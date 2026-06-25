@@ -39,11 +39,20 @@ jobs:
       working-directory: server-side-assignment
       run: docker compose up -d --build
 
+    - name: Wait for Docker containers
+      run: sleep 30
+
+    - name: Check containers status
+      run: docker ps -a
+
+    - name: Check backend logs
+      run: docker logs server-side-assignment-backend-1 || true
+
     - name: Wait for backend
-      run: npx wait-on http://localhost:${{ secrets.PORT }} --timeout 60000
+      run: npx wait-on http://localhost:${{ secrets.PORT }} --timeout 120000
 
     - name: Wait for frontend
-      run: npx wait-on http://localhost:${{ secrets.CLIENT_PORT }} --timeout 60000
+      run: npx wait-on http://localhost:${{ secrets.CLIENT_PORT }} --timeout 120000
 
     - name: Install dependencies
       working-directory: client-side-assignment
