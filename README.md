@@ -1,4 +1,4 @@
-Full Stack Application - Client Side 💻
+Full Stack Application - Client Side
 
 **Technical Stack**
 * **Library:** React.js
@@ -19,7 +19,7 @@ For the best experience and to ensure all services (Backend, Frontend, and Datab
 1. Clone the repositories:
 git clone https://github.com/pinchas0537/server-side-assignment
 git clone https://github.com/pinchas0537/client-side-assignment
-2. cd server-dist-assignment
+2. cd server-sidt-assignment
 3. docker compose up --build -d
 
 For Local Development Only
