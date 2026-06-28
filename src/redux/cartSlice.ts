@@ -34,7 +34,7 @@ const initialState:CartState = loadCartFromStorage();
 
 
 const calculateTotal = (items: CartItem[]) => {
-    return items.reduce((total, item) => total + (item.consumerPrice || item.price || 0) * item.quantity, 0);
+    return items.reduce((total, item) => total + (item.consumerPrice || 0) * item.quantity, 0);
 };
 
 const cartSlice = createSlice({
