@@ -1,12 +1,11 @@
 export interface Item {
     _id: string;
     name: string;
-    price: number;
     consumerPrice?: number;
     stock: number;
     category: string;
-    supplier?: string | Supplier;
-    supplierId?: string | Supplier;
+    supplier?: Supplier;
+    supplierId?: string;
     image?: string;
     description?: string;
 }

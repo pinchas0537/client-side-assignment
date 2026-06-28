@@ -30,3 +30,5 @@ dist-ssr
 /playwright/.cache/
 /playwright/.auth/
 package-lock.json
+.env
+.dist/

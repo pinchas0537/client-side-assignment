@@ -16,6 +16,7 @@ const Home: React.FC = () => {
         data: items = [],
         isLoading,
         isError,
+        refetch,
     } = useQuery({
         queryKey: ["items"],
         queryFn: getItems,
@@ -58,8 +59,8 @@ const Home: React.FC = () => {
                 return suppName === supplier;
             })
             .sort((a, b) => {
-                const priceA = a.consumerPrice || a.price || 0;
-                const priceB = b.consumerPrice || b.price || 0;
+                const priceA = a.consumerPrice || 0;
+                const priceB = b.consumerPrice || 0;
                 if (sortBy === "priceAsc") return priceA - priceB;
                 if (sortBy === "priceDesc") return priceB - priceA;
                 if (sortBy === "nameAsc") return a.name.localeCompare(b.name, "he");
@@ -104,6 +105,7 @@ const Home: React.FC = () => {
     if (isLoading)
         return (
             <div className="loader-container">
+                <h2>טוען מוצרים של החנות אנא המתן בסבלנות...</h2>
                 <div className="spinner"></div>
             </div>
         );
@@ -114,6 +116,13 @@ const Home: React.FC = () => {
                 <div className={`glass ${styles.emptyState}`}>
                     <PackageX size={48} className={styles.emptyIcon} />
                     <h2>אופס! שגיאה בטעינת המוצרים</h2>
+                    <button 
+                    className="btn btn-primary" 
+                    onClick={() => refetch()}
+                    style={{ marginTop: '1rem' }}
+                >
+                    נסה שוב
+                </button>
                 </div>
             </div>
         );
@@ -176,14 +185,14 @@ const Home: React.FC = () => {
                             </div>
                             <div className={styles.cardContent}>
                                 <h3 className={styles.cardTitle}>{item.name}</h3>
-                                <p className={styles.cardDescription}>{item.description}</p>
+                                <p className={styles.cardDescription}>{item.supplier?.name}</p>
                                 <div className={styles.cardFooter}>
-                                    <span className={styles.price}>₪{item.consumerPrice || item.price || 0}</span>
+                                    <span className={styles.price}>₪{item.consumerPrice || 0}</span>
                                     <div className={styles.cardActions}>
                                         <Link
                                             to={`/product/${item._id}`}
-                                            className="btn btn-secondary btn-icon"
-                                            title="צפייה בפרטים"
+                                            className="btn btn-secondary btn-icon btn-primary"
+                                            title="צפייה בפריטים"
                                         >
                                             <Eye size={20} />
                                         </Link>

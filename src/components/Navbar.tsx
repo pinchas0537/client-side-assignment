@@ -44,7 +44,9 @@ const Navbar: React.FC = () => {
             <ShoppingCart size={20} />
             <span className="hidden-mobile">עגלה</span>
             {cartItemsCount > 0 && (
-              <span className={styles.cartBadge}>{cartItemsCount}</span>
+              <span className={styles.cartBadge}
+              data-testid = "cart-badge"
+              >{cartItemsCount}</span>
             )}
           </Link>
         </div>
